@@ -1,4 +1,4 @@
-function [xvect, resvect, nit] = newton( fun, dfun, x0, tol, nmax )
+function [xvect, resvect, nit] = newton_modified( fun, dfun,multi, x0, tol, nmax )
 % NEWTON Find a zero of a nonlinear scalar function.
 %   [XVECT] = NEWTON(FUN,DFUN,X0,TOL,NMAX) finds a zero of the differentiable 
 %   function FUN using the Newton method and returns a vector XVECT containing 
@@ -22,7 +22,7 @@ function [xvect, resvect, nit] = newton( fun, dfun, x0, tol, nmax )
     %initial error
     err=tol+1;
     while (nit<nmax&&err>tol)
-        xnext = xvect(nit+1)-fun(xvect(nit+1))/dfun(xvect(nit+1));
+        xnext = xvect(nit+1)-multi*fun(xvect(nit+1))/dfun(xvect(nit+1));
         xvect = [xvect,xnext];
         resvect=[resvect,fun(xnext)];
         err=abs(xvect(nit+2)-xvect(nit+1));
@@ -30,7 +30,7 @@ function [xvect, resvect, nit] = newton( fun, dfun, x0, tol, nmax )
     end
     
     if err>tol
-        warning(['Newton method stopped wioutht converging '...
+        warning(['Newton modifiedmethod stopped wioutht converging '...
             'The algoritm has reached the maximum loops'])
     end
 
