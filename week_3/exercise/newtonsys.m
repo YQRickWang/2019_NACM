@@ -15,11 +15,16 @@ function [x, res, nit] = newtonsys( F, J, x0, tol, nmax )
 
 nit = 0; 
 x = x0; 
-res = ...; % define here the appropriate residual
+res = [0;0]; % define here the appropriate residual
 err_estim = tol + 1; % in this way we are sure we enter the loop
 while ( err_estim >= tol && nit < nmax )
-    % insert you implementation here 
-        
+    delta = linsolve(J(x(1,nit+1),x(2,nit+1)),-1*F(x(1,nit+1),x(2,nit+1)));
+    x_next = x(:,nit+1)+delta;
+    err_estim = norm(x_next-x(:,nit+1));
+    res = [res,F(x(1,nit+1),x(2,nit+1))];
+    
+    x = [x,x_next];
+    nit = nit +1;    
 end
 
 if err_estim >= tol
